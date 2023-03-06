@@ -1,7 +1,8 @@
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Injectable, NotFoundException } from '@nestjs/common';
+//
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { Employee, EmployeeDocument } from './schemas/employee.schema';
 

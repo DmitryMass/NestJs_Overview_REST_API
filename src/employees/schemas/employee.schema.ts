@@ -12,6 +12,9 @@ export class Employee {
   surname: string;
 
   @Prop({ required: true })
+  email: string;
+
+  @Prop({ required: true })
   age: number;
 }
 

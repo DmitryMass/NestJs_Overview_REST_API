@@ -2,7 +2,7 @@ import { Employee } from './schemas/employee.schema';
 import { EmployeeService } from './employee.service';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { Controller, HttpStatus } from '@nestjs/common';
+import { Controller, HttpStatus, ValidationPipe } from '@nestjs/common';
 import {
   Body,
   Delete,
@@ -30,7 +30,14 @@ export class EmployeesController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   createEmployee(
-    @Body() createEmployeeDto: CreateEmployeeDto,
+    @Body(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidUnknownValues: true,
+      }),
+    )
+    createEmployeeDto: CreateEmployeeDto,
   ): Promise<Employee> {
     return this.employeeService.createEmployee(createEmployeeDto);
   }
@@ -42,7 +49,8 @@ export class EmployeesController {
 
   @Put(':id')
   updateEmployee(
-    @Body() updateEmployeeDto: UpdateEmployeeDto,
+    @Body()
+    updateEmployeeDto: UpdateEmployeeDto,
     @Param('id') id: string,
   ): Promise<Employee> {
     return this.employeeService.updateEmployee(id, updateEmployeeDto);
