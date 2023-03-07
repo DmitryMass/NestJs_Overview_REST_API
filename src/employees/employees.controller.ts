@@ -12,21 +12,31 @@ import {
   Post,
   Put,
 } from '@nestjs/common/decorators';
+import { ApiOperation } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Работа с сотрудниками')
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeeService: EmployeeService) {}
+
+  @ApiOperation({ summary: 'Получение всех сотрудников' })
+  @ApiResponse({ status: 200, type: [Employee] })
   @Get()
   // @Redirect('https://google.com', 301) redirect after request to server
   getEmployees(): Promise<Employee[]> {
     return this.employeeService.getAll();
   }
 
+  @ApiOperation({ summary: 'Получение одного сотрудника' })
+  @ApiResponse({ status: 200, type: Employee })
   @Get(':id')
   getOneEmployee(@Param('id') id: string): Promise<Employee> {
     return this.employeeService.getOneEmployee(id);
   }
 
+  @ApiOperation({ summary: 'Создание нового сотрудника' })
+  @ApiResponse({ status: 200, type: Employee })
   @Post()
   @HttpCode(HttpStatus.CREATED)
   createEmployee(
@@ -42,11 +52,15 @@ export class EmployeesController {
     return this.employeeService.createEmployee(createEmployeeDto);
   }
 
+  @ApiOperation({ summary: 'Удаление сотрудника' })
+  @ApiResponse({ status: 200, type: Employee })
   @Delete(':id')
-  removeEmployee(@Param('id') id: string) {
+  removeEmployee(@Param('id') id: string): Promise<Employee> {
     return this.employeeService.removeEmployee(id);
   }
 
+  @ApiOperation({ summary: 'Изменение сотрудника' })
+  @ApiResponse({ status: 200, type: Employee })
   @Put(':id')
   updateEmployee(
     @Body()
